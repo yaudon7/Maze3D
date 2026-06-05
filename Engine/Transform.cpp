@@ -7,9 +7,11 @@ Transform::Transform(): pParent_(nullptr)
 	position_ = XMFLOAT3(0, 0, 0);
 	rotate_ = XMFLOAT3(0, 0, 0);
 	scale_ = XMFLOAT3(1, 1, 1);
-	matTranslate_ = XMMatrixIdentity();
+	matTranslate_ = XMMatrixIdentity();//単位行列
 	matRotate_ = XMMatrixIdentity();
 	matScale_ = XMMatrixIdentity();
+	isUseWorldMatrix_ = false;
+	matWorld_ = XMMatrixIdentity();
 }
 
 
@@ -24,6 +26,7 @@ void Transform::Calclation()
 
 	//回転行列
 	XMMATRIX rotateX, rotateY, rotateZ;
+	//XMConvertToDegrees() ラジアンから度
 	rotateX = XMMatrixRotationX(XMConvertToRadians(rotate_.x));
 	rotateY = XMMatrixRotationY(XMConvertToRadians(rotate_.y));
 	rotateZ = XMMatrixRotationZ(XMConvertToRadians(rotate_.z));
@@ -33,14 +36,36 @@ void Transform::Calclation()
 	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
 }
 
+void Transform::SetWorldMatrix(XMMATRIX matrix)
+{
+	isUseWorldMatrix_ = true;
+	matWorld_ = matrix;
+}
+
+void Transform::UseTransformParameter()
+{
+	isUseWorldMatrix_ = false;
+}
+
 XMMATRIX Transform::GetWorldMatrix() 
 {
-	Calclation();
-	if (pParent_)
+	XMMATRIX world;
+
+	if (isUseWorldMatrix_)
 	{
-		return  matScale_ * matRotate_ * matTranslate_ * pParent_->GetWorldMatrix();
+		world = matWorld_;
+	}
+	else
+	{
+		Calclation();
+		world = matScale_ * matRotate_ * matTranslate_;
 	}
 
-	return  matScale_ * matRotate_ * matTranslate_;
+	if (pParent_)
+	{
+		return  world * pParent_->GetWorldMatrix();
+	}
+
+	return  world;
 }
 

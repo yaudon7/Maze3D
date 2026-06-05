@@ -441,9 +441,30 @@ void FbxParts::Draw(Transform& transform)
 		// パラメータの受け渡し
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		CONSTANT_BUFFER cb;
-		cb.worldVewProj =	XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());						// リソースへ送る値をセット
-		cb.world =		XMMatrixTranspose(transform.GetWorldMatrix());
-		cb.normalTrans =	XMMatrixTranspose(transform.matRotate_ * XMMatrixInverse(nullptr, transform.matScale_));
+		//cb.worldVewProj =	XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());						// リソースへ送る値をセット
+		//cb.world =		XMMatrixTranspose(transform.GetWorldMatrix());
+		//cb.normalTrans =	XMMatrixTranspose(transform.matRotate_ * XMMatrixInverse(nullptr, transform.matScale_));
+
+		XMMATRIX world = transform.GetWorldMatrix();
+
+		cb.worldVewProj = XMMatrixTranspose(
+			world * Camera::GetViewMatrix() * Camera::GetProjectionMatrix()
+		);
+
+		cb.world = XMMatrixTranspose(world);
+
+		// 法線用の行列を作る
+		XMMATRIX normalSource = world;
+
+		// 法線には移動成分はいらないので消す
+		normalSource.r[3] = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+
+		// 法線変換用行列
+		cb.normalTrans = XMMatrixTranspose(
+			normalSource
+		);
+
+
 		cb.ambient = pMaterial_[i].ambient;
 		cb.diffuse = pMaterial_[i].diffuse;
 		cb.speculer = pMaterial_[i].specular;

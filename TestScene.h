@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Model.h"
+
 
 //テストシーンを管理するクラス
 class TestScene : public GameObject
@@ -21,7 +21,4 @@ public:
 
 	//開放
 	void Release() override;
-private:
-	int hModel_;//さいころのモデルのハンドル
-	float speed_;//さいころのスピード
 };
