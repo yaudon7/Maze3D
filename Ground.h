@@ -1,19 +1,18 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-class Player :
-    public GameObject
+class Ground :
+	public GameObject
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	Player(GameObject* parent);
+	Ground(GameObject* parent);
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
 	void Release() override;
 private:
-	int hWalkModel_;//Playerのモデルのハンドル
-	int hIdleModel_;
+	int hModel_;
 };
 

@@ -92,7 +92,8 @@ float4 PS(VS_OUT inData) : SV_Target
 	{
 		//マテリアルの色
 		diffuse = g_vecDiffuse;
-	}
+        //diffuse = float4(0, 0, 0, 0);
+    }
 
 	//環境光（アンビエント）
 	//これはMaya側で指定し、グローバル変数で受け取ったものをそのまま
