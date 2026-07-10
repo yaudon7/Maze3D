@@ -1,7 +1,5 @@
 #include "Ground.h"
-#include "Player.h"
 #include "Engine/Model.h"
-#include "Block.h"
 
 namespace
 {
@@ -9,28 +7,28 @@ namespace
 	int model_t = -1;
 	vector<vector<int>> mapData =
 	{
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1}
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, // 0行目 (外壁)
+	{1, 0, 0, 0, 1, 0, 0, 0, 0, 1}, // 1行目 (左上がスタート)
+	{1, 0, 1, 0, 1, 0, 1, 1, 0, 1}, // 2行目
+	{1, 0, 1, 0, 0, 0, 1, 0, 0, 1}, // 3行目
+	{1, 1, 1, 1, 1, 0, 1, 0, 1, 1}, // 4行目
+	{1, 0, 0, 0, 1, 0, 0, 0, 1, 1}, // 5行目
+	{1, 0, 1, 0, 1, 1, 1, 0, 0, 1}, // 6行目
+	{1, 0, 1, 0, 0, 0, 1, 1, 0, 1}, // 7行目
+	{1, 1, 1, 1, 1, 0, 0, 0, 0, 1}, // 8行目 (右下がゴール)
+	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  // 9行目 (外壁)
 	};
 }
 Ground::Ground(GameObject* parent)
-	:GameObject(parent), hModel_(-1) {
+	:GameObject(parent), hModel_(-1)
+{
+	mapData_ = mapData;
 }
 
 void Ground::Initialize()
 {
-	model_t = Model::Load("jimen.fbx");
-	transform_.rotate_.y = -90;
+	hModel_ = Model::Load("jimen3.fbx");
+	model_t = Model::Load("Block_P.fbx");
 }
 
 void Ground::Update()
@@ -39,15 +37,18 @@ void Ground::Update()
 
 void Ground::Draw()
 {
-	Model::SetTransform(model_t, transform_);
-	Model::Draw(model_t);
-	for (int j = 0; j < 8; j++)
+	Model::SetTransform(hModel_, transform_);
+	Model::Draw(hModel_);
+	for (int j = 0; j < 10; j++)
 	{
-		for (int i = 0; i < 8; i++)
+		for (int i = 0; i < 10; i++)
 		{
-			if (mapData[j][i] == 1)
+			if (mapData_[j][i] == 1)
 			{
-				//Instantiate<Block>(this);
+				Transform tr;
+				tr.position_ = { -9.0f + i * 2.0f,0.0f,9.0f - j * 2.0f };
+				Model::SetTransform(model_t, tr);
+				Model::Draw(model_t);
 			}
 		}
 	}
