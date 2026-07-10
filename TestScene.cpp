@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Ground.h"
 #include "Block.h"
+#include "Engine//Camera.h"
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
@@ -15,6 +16,8 @@ void TestScene::Initialize()
 	Instantiate<Player>(this);
 	Instantiate<Ground>(this);
 	Instantiate<Block>(this);
+	Camera::SetPosition(XMFLOAT3(0, 20, -8));
+	Camera::SetTarget(XMFLOAT3(0, 2, 0));
 }
 
 //更新
