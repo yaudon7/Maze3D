@@ -15,7 +15,7 @@ namespace
 	};
 
 	PLAYER_STATE pstate = PLAYER_STATE::PLAYER_IDLE; //プレイヤーの状態を管理する変数
-
+	float adjustAngle(float angle);
 	enum PLAYER_DIRECTION
 	{
 		PLAYER_UP,
@@ -28,10 +28,26 @@ namespace
 	PLAYER_DIRECTION pdirection = PLAYER_DIRECTION::PLAYER_DOWN;
 	float P_ANGLE[PLAYER_DIRECTION_MAX] = { 0.0f,180.0f,-90.0f,90.0f };
 	float TURN_FRAME = 30.0f;
-
 	float start_turn_angle = 0.0f;
 	float end_turn_angle = 0.0f;
+	//回転中に別の方向に回転するために必要（今は不要）
 	PLAYER_DIRECTION turnEndDirection = PLAYER_DIRECTION::PLAYER_DOWN;
+
+	float adjustAngle(float start, float end)
+	{
+		float diff = end - start;
+		//180～-180度の範囲内に収めると最短経路が求まる
+		if (diff > 180.0f)
+		{
+			diff -= 360.0f;
+		}
+		else if (diff < -180.0f)
+		{
+			diff += 360.0f;
+		}
+
+		return diff;
+	}
 }
 
 
@@ -49,8 +65,6 @@ void Player::Initialize()
 
 	hIdleModel_ = Model::Load("Idle.fbx");
 	Model::SetAnimFrame(hIdleModel_, 0, 117, 1.0);
-
-
 }
 
 void Player::Update()
@@ -61,6 +75,7 @@ void Player::Update()
 	float angle = 0.0f;
 	static float turn_frame = 0.0f;//回転中のフレームを管理する変数
 
+	//turn中は待機モードにしない
 	if (pstate != PLAYER_STATE::PLAYER_TURN)
 	{
 		pstate = PLAYER_STATE::PLAYER_IDLE;
@@ -68,7 +83,8 @@ void Player::Update()
 
 	PLAYER_DIRECTION oldDir = pdirection;//今の向き
 
-	if (pstate != PLAYER_STATE::PLAYER_TURN) 
+	//ターン中は入力を受け付けない
+	if (pstate != PLAYER_STATE::PLAYER_TURN)
 	{
 		if (Input::IsKey(DIK_LEFT))
 		{
@@ -96,6 +112,7 @@ void Player::Update()
 		}
 	}
 
+	//ターンモードの初期化
 	if (oldDir != pdirection)
 	{
 		pstate = PLAYER_STATE::PLAYER_TURN;
@@ -109,36 +126,37 @@ void Player::Update()
 	pos = pos + SPEED * move;
 	XMStoreFloat3(&transform_.position_, pos);
 
-	if (pstate == PLAYER_TURN)
+	if (pstate == PLAYER_STATE::PLAYER_TURN)
 	{
 		turn_frame += 1.0f;
 
-		float t = turn_frame / TURN_FRAME;
+		float t = (turn_frame / TURN_FRAME) + 0.5f;
 
 		if (t > 1.0f)
 		{
 			t = 1.0f;
+			turn_frame = TURN_FRAME;
 		}
 
-		angle = start_turn_angle +(end_turn_angle - start_turn_angle)  * t;
-		transform_.rotate_.y = angle;
+		float diff = adjustAngle(start_turn_angle, end_turn_angle);
+		transform_.rotate_.y = start_turn_angle + diff * t;//補間で一定の割合ずつ回転
 
 		if (turn_frame >= TURN_FRAME)
 		{
-			pdirection = turnEndDirection;
-			transform_.rotate_.y = P_ANGLE[pdirection];
+			//pdirection = turnEndDirection;
+			//transform_.rotate_.y = P_ANGLE[pdirection];
 			pstate = PLAYER_STATE::PLAYER_WALK;
 		}
 		return;
 	}
 	else if (pstate != PLAYER_STATE::PLAYER_TURN)
 	{
-		transform_.rotate_.y = P_ANGLE[pdirection];
+		//transform_.rotate_.y = P_ANGLE[pdirection];
 	}
 
-	pdirection = turnEndDirection;
+	/*pdirection = turnEndDirection;
 	transform_.rotate_.y = P_ANGLE[pdirection];
-	pstate = PLAYER_STATE::PLAYER_WALK;
+	pstate = PLAYER_STATE::PLAYER_WALK;*/
 }
 
 void Player::Draw()
@@ -153,7 +171,6 @@ void Player::Draw()
 		Model::SetTransform(hWalkModel_, transform_);
 		Model::Draw(hWalkModel_);
 	}
-
 }
 
 void Player::Release()

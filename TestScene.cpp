@@ -1,6 +1,7 @@
 #include "TestScene.h"
 #include "Player.h"
 #include "Ground.h"
+#include "Block.h"
 
 //コンストラクタ
 TestScene::TestScene(GameObject * parent)
@@ -13,6 +14,7 @@ void TestScene::Initialize()
 {
 	Instantiate<Player>(this);
 	Instantiate<Ground>(this);
+	Instantiate<Block>(this);
 }
 
 //更新
