@@ -49,6 +49,8 @@ namespace
 
 		return diff;
 	}
+
+	std::vector<std::vector<int>> gmap;
 }
 
 
@@ -127,16 +129,16 @@ void Player::Update()
 	pos = pos + SPEED * move;
 	XMStoreFloat3(&transform_.position_, pos);
 
-	XMVECTOR wpos = transform_.position_;
+	XMFLOAT3 wpos = transform_.position_;
 	//壁に食い込んだら戻す
-	gmap = ground_->GetMapData();//マップデータを取得
+ 	gmap = ground_->GetMapData();//マップデータを取得
 	//壁の判定
 	int mapX = (int)((wpos.x) + 10) / 2;
-	int mapZ = (int)(10 - (-wpos.z)) / 2;
+	int mapZ = (int)(10 - (wpos.z)) / 2;
 	if (gmap[mapZ][mapX] == 1)
 	{
 		pos = pos - SPEED * move;
-		XMStoreFloat3(&transform_.position
+		XMStoreFloat3(&transform_.position_,pos);
 	}
 
 	if (pstate == PLAYER_STATE::PLAYER_TURN)
