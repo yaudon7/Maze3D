@@ -2,6 +2,8 @@
 #include "Engine/GameObject.h"
 #include <vector>
 
+class Player;
+
 class Ground :
 	public GameObject
 {
@@ -16,6 +18,12 @@ public:
 	void Release() override;
 private:
 	int hModel_;
+	int mapWidth_;
+	int mapHeight_;
+	int foodWidth_;
+	int foodHeight_;
 	std::vector<std::vector<int>> mapData_;
+	std::vector<std::vector<int>> foodData_;
+	Player* pPlayer;
 };
 
