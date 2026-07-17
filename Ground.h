@@ -2,8 +2,6 @@
 #include "Engine/GameObject.h"
 #include <vector>
 
-class Player;
-
 class Ground :
 	public GameObject
 {
@@ -22,8 +20,9 @@ private:
 	int mapHeight_;
 	int foodWidth_;
 	int foodHeight_;
+	int powerFoodWidth_;
+	int powerFoodHeight_;
 	std::vector<std::vector<int>> mapData_;
 	std::vector<std::vector<int>> foodData_;
-	Player* pPlayer;
 };
 

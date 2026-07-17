@@ -1,6 +1,6 @@
 #include "TestScene.h"
-#include "Player.h"
 #include "Ground.h"
+#include "Food.h"
 #include "Engine//Camera.h"
 
 
@@ -13,9 +13,9 @@ TestScene::TestScene(GameObject * parent)
 //‰Šú‰»
 void TestScene::Initialize()
 {
-	Player* pPlayer = Instantiate<Player>(this);
 	Ground* pGround = Instantiate<Ground>(this);
-	pPlayer->SetGround(pGround);
+	Food* pFood;
+
 
 	Camera::SetPosition(XMFLOAT3(0, 20, -10));
 	Camera::SetTarget(XMFLOAT3(0, 5, -2));
@@ -29,6 +29,7 @@ void TestScene::Update()
 //•`‰æ
 void TestScene::Draw()
 {
+	
 }
 
 //ŠJ•ú

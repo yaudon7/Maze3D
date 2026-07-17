@@ -2,12 +2,14 @@
 #include "Engine/Model.h"
 #include "Engine/CsvReader.h"
 #include "Player.h"
+#include "Food.h"
 
 namespace
 {
 	using std::vector;
 	int model_t = -1;
 	int foodModel_ = -1;
+	int powerFoodModel_ = -1;
 }
 
 Ground::Ground(GameObject* parent)
@@ -22,6 +24,11 @@ Ground::Ground(GameObject* parent)
 		for (int y = 0; y < mapHeight_;y++)
 		{
 			mapData_[y][x] = csvData.GetValue(x, y);//GetString()は文字
+			if (mapData_[y][x] > 1) {
+				Player* pPlayer = Instantiate<Player>(this);
+				pPlayer->SetGround(this);
+				pPlayer->SetPosition(-9.0f + x * 2.0f, 0.0f, 9.0f - y * 2.0f);
+			}
 		}
 
 	CsvReader csvFoodData;
@@ -33,6 +40,18 @@ Ground::Ground(GameObject* parent)
 		for (int y = 0; y < foodHeight_;y++)
 		{
 			foodData_[y][x] = csvFoodData.GetValue(x, y);//GetString()は文字
+			if (foodData_[y][x] != 1) {
+				Food* food = Instantiate<Food>(this);
+				food->SetPosition(-9.0f + x * 2.0f, 0.0f, 9.0f - y * 2.0f);
+				if (foodData_[y][x] == 0)
+				{
+					food->SetFoodType(FoodType::FOODTYPE_NORMAL);
+				}
+				else if (foodData_[y][x] == 3)
+				{
+					food->SetFoodType(FoodType::FOODTYPE_POWER);
+				}
+			}
 		}
 }
 
@@ -40,25 +59,11 @@ void Ground::Initialize()
 {
 	hModel_ = Model::Load("jimen3.fbx");
 	model_t = Model::Load("Block_P.fbx");
-	foodModel_ = Model::Load("Food.fbx");
-	//pPlayer = Instantiate<Player>(this);
-
-	/*for (int j = 0; j < mapHeight_; j++)
-	{
-		for (int i = 0; i < mapWidth_; i++)
-		{
-			if (mapData_[j][i] == 2)
-			{
-				if (pPlayer) {
-					pPlayer->SetPosition({ -9.0f + i * 2.0f,0.0f,9.0f - j * 2.0f });
-				}
-			}
-		}
-	}*/
 }
 
 void Ground::Update()
 {
+
 }
 
 void Ground::Draw()
@@ -75,13 +80,6 @@ void Ground::Draw()
 				tr.position_ = { -9.0f + i * 2.0f,0.0f,9.0f - j * 2.0f };
 				Model::SetTransform(model_t, tr);
 				Model::Draw(model_t);
-			}
-			if (foodData_[j][i] == 0)
-			{
-				Transform tr;
-				tr.position_ = { -9.0f + i * 2.0f,0.0f,9.0f - j * 2.0f };
-				Model::SetTransform(foodModel_, tr);
-				Model::Draw(foodModel_);
 			}
 		}
 	}
