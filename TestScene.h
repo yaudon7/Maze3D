@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
 
+class Food;
+class Text;
 
 //テストシーンを管理するクラス
 class TestScene : public GameObject
@@ -21,4 +23,11 @@ public:
 
 	//開放
 	void Release() override;
+	void AddScore(int score) { myScore_++; }
+private:
+	Text* pText_;
+	int myScore_;
+	Food* food_;
+	int rstFood_;
+	int sumFood;
 };

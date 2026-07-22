@@ -1,9 +1,13 @@
 #include "Food.h"
 #include "Engine/Model.h"
+#include "TestScene.h"
 
+
+int Food::sum_food_ = 0;
+int Food::rest_food_ = 0;
 
 Food::Food(GameObject* parent)
-	:GameObject(parent,"Food"),type_(FOODTYPE_NORMAL),hModel_(-1),score_(0),sum_score_(0),pText(nullptr)
+	:GameObject(parent,"Food"),type_(FOODTYPE_NORMAL),hModel_(-1),score_(0),sum_score_(0)
 {
 }
 
@@ -15,7 +19,7 @@ void Food::Initialize()
 {
 
 	pPlayer = (Player*)FindObject("Player");
-	pText = new Text;
+	
 	
 }
 
@@ -41,13 +45,10 @@ void Food::Draw()
 		Model::SetTransform(hModel_, transform_);
 		Model::Draw(hModel_);
 	}
-
-	pText->Draw(30, 100, sum_score_);
 }
 
 void Food::Release()
 {
-	pText->Release();
 }
 
 void Food::SetFoodType(FoodType type)
@@ -59,6 +60,8 @@ void Food::SetFoodType(FoodType type)
 		AddCollider(collider);
 		hModel_ = Model::Load("Food.fbx");
 		score_ = 1;
+		sum_food_++;
+		rest_food_++;
 	}
 	else if (type_ == FoodType::FOODTYPE_POWER)
 	{
@@ -66,6 +69,8 @@ void Food::SetFoodType(FoodType type)
 		AddCollider(collider);
 		hModel_ = Model::Load("PowerFood.fbx");
 		score_ = 5;
+		sum_food_++;
+		rest_food_++;
 	}
 }
 
@@ -76,9 +81,15 @@ void Food::OnCollision(GameObject* pTarget)
 		return;
 	}
 
+	
 	if (pTarget->GetObjectName() == "Player")
 	{
-		sum_score_ += score_;
+		TestScene* test = dynamic_cast<TestScene*>(GetParent()->GetParent());
+		if (test) {
+			test->AddScore(score_);
+		}
+
+		rest_food_--;
 		KillMe();
 	}
 }
