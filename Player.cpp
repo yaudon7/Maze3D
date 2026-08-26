@@ -70,6 +70,8 @@ void Player::Initialize()
 
 	SphereCollider* collider = new SphereCollider({ 0,0,0 }, 0.5f);
 	AddCollider(collider);
+
+	powerUPTime_ = 0.0f;
 }
 
 void Player::Update()
@@ -79,6 +81,7 @@ void Player::Update()
 	const float SPEED = 0.05f;
 	float angle = 0.0f;
 	static float turn_frame = 0.0f;//回転中のフレームを管理する変数
+	float deltaTime = 1.0f / 60.0f;
 
 	//turn中は待機モードにしない
 	if (pstate != PLAYER_STATE::PLAYER_TURN)
@@ -174,6 +177,11 @@ void Player::Update()
 	/*pdirection = turnEndDirection;
 	transform_.rotate_.y = P_ANGLE[pdirection];
 	pstate = PLAYER_STATE::PLAYER_WALK;*/
+
+	if (powerUPTime_ > 0.0f)
+	{
+		powerUPTime_ -= deltaTime;
+	}
 }
 
 void Player::Draw()
@@ -192,4 +200,24 @@ void Player::Draw()
 
 void Player::Release()
 {
+}
+
+void Player::OnCollision(GameObject* pTarget)
+{
+	if (pTarget->GetObjectName() == "PowerFood")
+	{
+		powerUPTime_ = 5.0f;
+	}
+
+	if (pTarget->GetObjectName() == "Slime")
+	{
+		if (powerUPTime_ > 0.0f)
+		{
+			pTarget->KillMe();
+		}
+		else
+		{
+			KillMe();
+		}
+	}
 }

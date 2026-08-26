@@ -3,6 +3,8 @@
 #include "Engine/CsvReader.h"
 #include "Player.h"
 #include "Food.h"
+#include "PowerFood.h"
+#include "Slime.h"
 
 namespace
 {
@@ -24,10 +26,16 @@ Ground::Ground(GameObject* parent)
 		for (int y = 0; y < mapHeight_;y++)
 		{
 			mapData_[y][x] = csvData.GetValue(x, y);//GetString()は文字
-			if (mapData_[y][x] > 1) {
+			if (mapData_[y][x] == 2) {
 				Player* pPlayer = Instantiate<Player>(this);
 				pPlayer->SetGround(this);
 				pPlayer->SetPosition(-9.0f + x * 2.0f, 0.0f, 9.0f - y * 2.0f);
+			}
+			else if (mapData_[y][x] == 3)
+			{
+				Slime* pSlime = Instantiate<Slime>(this);
+				pSlime->SetGround(this);
+				pSlime->SetPosition(-9.0f + x * 2.0f, 0.0f, 9.0f - y * 2.0f);
 			}
 		}
 
@@ -42,14 +50,16 @@ Ground::Ground(GameObject* parent)
 			foodData_[y][x] = csvFoodData.GetValue(x, y);//GetString()は文字
 			if (foodData_[y][x] != 1) {
 				Food* food = Instantiate<Food>(this);
+				PowerFood* pFood = Instantiate<PowerFood>(this);
 				food->SetPosition(-9.0f + x * 2.0f, 0.0f, 9.0f - y * 2.0f);
+				pFood->SetPosition(-9.0f + x * 2.0f, 0.0f, 9.0f - y * 2.0f);
 				if (foodData_[y][x] == 0)
 				{
-					food->SetFoodType(FoodType::FOODTYPE_NORMAL);
+					food->SetFood();
 				}
 				else if (foodData_[y][x] == 3)
 				{
-					food->SetFoodType(FoodType::FOODTYPE_POWER);
+					pFood->SetPowerFood();
 				}
 			}
 		}

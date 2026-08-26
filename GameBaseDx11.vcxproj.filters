@@ -99,6 +99,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Food.cpp" />
+    <ClCompile Include="Slime.cpp" />
+    <ClCompile Include="PowerFood.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -174,6 +176,12 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Food.h" />
+    <ClInclude Include="Slime.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerFood.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">

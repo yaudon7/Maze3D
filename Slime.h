@@ -1,26 +1,24 @@
 #pragma once
 #include "Engine/GameObject.h"
 
-
 class Ground;//前方宣言
 
-class Player :
-    public GameObject
+//テストシーンを管理するクラス
+class Slime : public GameObject
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	Player(GameObject* parent);
+	Slime(GameObject* parent);
+
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
 	void Release() override;
-	void SetGround(Ground* ground) { ground_ = ground; }
-	void OnCollision(GameObject* pTarget)override;
-private:
-	int hWalkModel_;//Playerのモデルのハンドル
-	int hIdleModel_;
-	float powerUPTime_;
-	Ground* ground_;//Groundのポインタ
-};
 
+	void SetGround(Ground* ground) { ground_ = ground; }
+
+private:
+	int hModel_;
+	Ground* ground_;
+};

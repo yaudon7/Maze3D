@@ -22,7 +22,7 @@ void TestScene::Initialize()
 	pText_->Initialize();
 
 
-	Camera::SetPosition(XMFLOAT3(0, 20, -15));
+	Camera::SetPosition(XMFLOAT3(0, 20, -25));
 	Camera::SetTarget(XMFLOAT3(0, 5, -2));
 }
 

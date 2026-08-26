@@ -3,22 +3,22 @@
 
 class Player;
 
-class Food :
+class PowerFood :
 	public GameObject
 {
 public:
-	
 
-	Food(GameObject* parent);
-	~Food();
+
+	PowerFood(GameObject* parent);
+	~PowerFood();
 	void Initialize() override;
 	void Update() override;
 	void Draw() override;
 	void Release() override;
-	void SetFood();
 	void OnCollision(GameObject* pTarget)override;
-    static	int GetRestFood()  { return rest_food_; }
-	static int GetSumFood()  { return sum_food_; }
+	void SetPowerFood();
+	static	int GetRestFood() { return rest_food_; }
+	static int GetSumFood() { return sum_food_; }
 private:
 	Player* pPlayer;
 	int hModel_;
