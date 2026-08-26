@@ -20,7 +20,7 @@ public:
 private:
 	int hWalkModel_;//Playerのモデルのハンドル
 	int hIdleModel_;
-	float powerUPTime_;
+	float powerUPTime_;//パワーアップ時間
 	Ground* ground_;//Groundのポインタ
 };
 

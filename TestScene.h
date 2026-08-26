@@ -3,6 +3,7 @@
 
 class Food;
 class Text;
+class Player;
 
 //テストシーンを管理するクラス
 class TestScene : public GameObject
@@ -30,4 +31,5 @@ private:
 	Food* food_;
 	int rstFood_;
 	int sumFood;
+	Player* pPlayer_;
 };

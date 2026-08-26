@@ -10,6 +10,7 @@ namespace
 	{
 		PLAYER_IDLE,
 		PLAYER_WALK,
+		PLAYER_JAMP,
 		PLAYER_TURN,
 		PLAYER_STATE_MAX //状態の数
 	};
@@ -132,6 +133,7 @@ void Player::Update()
 	}
 
 	pos = pos + SPEED * move;
+	
 	XMStoreFloat3(&transform_.position_, pos);
 
 	XMFLOAT3 wpos = transform_.position_;

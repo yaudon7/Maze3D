@@ -3,6 +3,8 @@
 #include "Engine//Camera.h"
 #include "Engine//Text.h"
 #include "Food.h"
+#include "Player.h"
+#include "Engine/SceneManager.h"
 
 
 namespace {
@@ -21,7 +23,6 @@ void TestScene::Initialize()
 	pText_ = new Text;
 	pText_->Initialize();
 
-
 	Camera::SetPosition(XMFLOAT3(0, 20, -25));
 	Camera::SetTarget(XMFLOAT3(0, 5, -2));
 }
@@ -31,6 +32,13 @@ void TestScene::Update()
 {
 		rstFood_= Food::GetRestFood();
 		sumFood = Food::GetSumFood();
+		
+		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
+		pPlayer_ = (Player*)FindObject("Player");
+		if (pPlayer_ == nullptr)
+		{
+			pSceneManager->ChangeScene(SCENE_ID::SCENE_ID_OVER);
+		}
 }
 
 //•`‰æ
@@ -49,5 +57,4 @@ void TestScene::Draw()
 //ŠJ•ú
 void TestScene::Release()
 {
-	pText_->Release();
 }

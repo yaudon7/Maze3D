@@ -101,6 +101,8 @@
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="PowerFood.cpp" />
+    <ClCompile Include="StartScene.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -180,6 +182,12 @@
       <Filter>リソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="PowerFood.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="StartScene.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
