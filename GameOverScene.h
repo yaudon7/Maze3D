@@ -14,5 +14,5 @@ public:
 	void Draw() override;
 	void Release() override;
 private:
-	Text* pText_;
+	Text* pText_;//Textのアドレスを保持する変数
 };

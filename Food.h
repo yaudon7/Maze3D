@@ -20,11 +20,11 @@ public:
     static	int GetRestFood()  { return rest_food_; }
 	static int GetSumFood()  { return sum_food_; }
 private:
-	Player* pPlayer;
-	int hModel_;
-	int score_;
-	int sum_score_;
-	static int sum_food_;
-	static int rest_food_;
+	Player* pPlayer;//Playerのアドレスを保持する変数
+	int hModel_;//モデルのハンドル
+	int score_;//スコア
+	int sum_score_;//合計スコア
+	static int sum_food_;//合計フード数
+	static int rest_food_;//残りフード数
 };
 

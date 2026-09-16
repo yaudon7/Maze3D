@@ -9,27 +9,17 @@ class Player;
 class TestScene : public GameObject
 {
 public:
-	//コンストラクタ
-	//引数：parent  親オブジェクト（SceneManager）
 	TestScene(GameObject* parent);
-
-	//初期化
 	void Initialize() override;
-
-	//更新
 	void Update() override;
-
-	//描画
 	void Draw() override;
-
-	//開放
 	void Release() override;
 	void AddScore(int score) { myScore_++; }
 private:
-	Text* pText_;
-	int myScore_;
-	Food* food_;
-	int rstFood_;
-	int sumFood;
-	Player* pPlayer_;
+	Text* pText_;//スコア表示用のテキスト
+	int myScore_;//現在スコア
+	Food* food_;//フードのアドレスを保持する変数
+	int rstFood_;//残りフード数
+	int sumFood_;//合計フード数
+	Player* pPlayer_;//プレイヤーのアドレスを保持する変数
 };

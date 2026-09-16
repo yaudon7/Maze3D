@@ -31,7 +31,7 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 		rstFood_= Food::GetRestFood();
-		sumFood = Food::GetSumFood();
+		sumFood_ = Food::GetSumFood();
 		
 		SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
 		pPlayer_ = (Player*)FindObject("Player");
